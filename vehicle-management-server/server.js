@@ -5,18 +5,27 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      process.env.FRONTEND_URL,
+    ].filter(Boolean),
+  })
+);
 app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET || "vehicle_mgmt_dev_secret";
 const SALT_ROUNDS = 10;
+const PORT = process.env.PORT || 5000;
 
 // MySQL connection
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "saurabhK@12",
-  database: "vehicle_db",
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "saurabhK@12",
+  database: process.env.DB_NAME || "vehicle_db",
+  port: Number(process.env.DB_PORT || 3306),
 });
 
 db.connect((err) => {
@@ -866,6 +875,4 @@ app.delete("/job-cards/:id", (req, res) => {
 
 /* ================= START SERVER ================= */
 
-app.listen(5000, () =>
-  console.log("Backend running on http://localhost:5000")
-);
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
