@@ -1,0 +1,26 @@
+{
+  "name": "vehicle-management-system",
+  "version": "1.0.0",
+  "description": "Combined frontend and backend runner",
+  "main": "index.js",
+  "scripts": {
+    "start:client": "npm start --prefix vehicle-management-client",
+    "start:server": "nodemon server.js --prefix vehicle-management-server",
+    "start:all": "concurrently \"npm start --prefix vehicle-management-client\" \"nodemon server.js --prefix vehicle-management-server\"",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "concurrently": "^9.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.16.3",
+    "nodemon": "^3.1.11"
+  }
+}
