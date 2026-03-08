@@ -18,15 +18,20 @@ app.use(express.json());
 const JWT_SECRET = process.env.JWT_SECRET || "vehicle_mgmt_dev_secret";
 const SALT_ROUNDS = 10;
 const PORT = process.env.PORT || 5000;
+const mysqlUrl = process.env.MYSQL_URL || process.env.MYSQL_PUBLIC_URL || "";
 
 // MySQL connection
-const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "saurabhK@12",
-  database: process.env.DB_NAME || "vehicle_db",
-  port: Number(process.env.DB_PORT || 3306),
-});
+const db = mysql.createConnection(
+  mysqlUrl
+    ? mysqlUrl
+    : {
+        host: process.env.DB_HOST || "localhost",
+        user: process.env.DB_USER || "root",
+        password: process.env.DB_PASSWORD || "saurabhK@12",
+        database: process.env.DB_NAME || "vehicle_db",
+        port: Number(process.env.DB_PORT || 3306),
+      }
+);
 
 db.connect((err) => {
   if (err) console.error("MySQL connection error:", err);
