@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1420" viewBox="0 0 2000 1420">
+  <defs>
+    <style>
+      .title { font: 700 34px Arial, sans-serif; fill: #0f172a; }
+      .head { font: 700 22px Arial, sans-serif; fill: #0f172a; }
+      .item { font: 17px Arial, sans-serif; fill: #1f2937; }
+      .small { font: 15px Arial, sans-serif; fill: #475569; }
+      .cls { fill: #ffffff; stroke: #2563eb; stroke-width: 2.6; rx: 18; ry: 18; }
+      .line { stroke: #334155; stroke-width: 2.2; fill: none; }
+      .arrow { stroke: #334155; stroke-width: 2.4; fill: none; marker-end: url(#arrow); stroke-linecap: round; }
+      .hint { font: 700 14px Arial, sans-serif; fill: #1d4ed8; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0,0 10,5 0,10" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect x="30" y="30" width="1940" height="1360" fill="#f8fbff" stroke="#dbeafe" stroke-width="2" rx="26" ry="26" />
+  <text x="1000" y="88" text-anchor="middle" class="title">Vehicle Management System Class Diagram</text>
+
+  <g transform="translate(80,150)">
+    <rect width="360" height="250" class="cls" />
+    <line x1="0" y1="58" x2="360" y2="58" class="line" />
+    <line x1="0" y1="198" x2="360" y2="198" class="line" />
+    <text x="180" y="37" text-anchor="middle" class="head">Role</text>
+    <text x="20" y="92" class="item">+ role_id</text>
+    <text x="20" y="120" class="item">+ role_name</text>
+    <text x="20" y="148" class="item">+ created_at</text>
+    <text x="20" y="225" class="item">+ assignRole()</text>
+  </g>
+
+  <g transform="translate(520,150)">
+    <rect width="430" height="320" class="cls" />
+    <line x1="0" y1="58" x2="430" y2="58" class="line" />
+    <line x1="0" y1="250" x2="430" y2="250" class="line" />
+    <text x="215" y="37" text-anchor="middle" class="head">User</text>
+    <text x="20" y="92" class="item">+ user_id</text>
+    <text x="20" y="120" class="item">+ name</text>
+    <text x="20" y="148" class="item">+ username</text>
+    <text x="20" y="176" class="item">+ email</text>
+    <text x="20" y="204" class="item">+ password_hash</text>
+    <text x="20" y="232" class="item">+ is_active</text>
+    <text x="20" y="279" class="item">+ login()</text>
+    <text x="20" y="307" class="item">+ logout()</text>
+  </g>
+
+  <g transform="translate(1030,150)">
+    <rect width="420" height="280" class="cls" />
+    <line x1="0" y1="58" x2="420" y2="58" class="line" />
+    <line x1="0" y1="222" x2="420" y2="222" class="line" />
+    <text x="210" y="37" text-anchor="middle" class="head">Vehicle</text>
+    <text x="20" y="92" class="item">+ vehicle_id</text>
+    <text x="20" y="120" class="item">+ model</text>
+    <text x="20" y="148" class="item">+ owner</text>
+    <text x="20" y="176" class="item">+ registration</text>
+    <text x="20" y="204" class="item">+ is_deleted</text>
+    <text x="20" y="252" class="item">+ addVehicle()</text>
+  </g>
+
+  <g transform="translate(1530,150)">
+    <rect width="330" height="250" class="cls" />
+    <line x1="0" y1="58" x2="330" y2="58" class="line" />
+    <line x1="0" y1="198" x2="330" y2="198" class="line" />
+    <text x="165" y="37" text-anchor="middle" class="head">ServiceMaster</text>
+    <text x="20" y="92" class="item">+ service_id</text>
+    <text x="20" y="120" class="item">+ service_type</text>
+    <text x="20" y="148" class="item">+ base_cost</text>
+    <text x="20" y="176" class="item">+ is_active</text>
+    <text x="20" y="225" class="item">+ maintainCatalog()</text>
+  </g>
+
+  <g transform="translate(120,590)">
+    <rect width="430" height="280" class="cls" />
+    <line x1="0" y1="58" x2="430" y2="58" class="line" />
+    <line x1="0" y1="222" x2="430" y2="222" class="line" />
+    <text x="215" y="37" text-anchor="middle" class="head">Service</text>
+    <text x="20" y="92" class="item">+ service_id</text>
+    <text x="20" y="120" class="item">+ vehicle_id</text>
+    <text x="20" y="148" class="item">+ service_type</text>
+    <text x="20" y="176" class="item">+ service_date</text>
+    <text x="20" y="204" class="item">+ status</text>
+    <text x="20" y="252" class="item">+ updateService()</text>
+  </g>
+
+  <g transform="translate(630,590)">
+    <rect width="430" height="310" class="cls" />
+    <line x1="0" y1="58" x2="430" y2="58" class="line" />
+    <line x1="0" y1="248" x2="430" y2="248" class="line" />
+    <text x="215" y="37" text-anchor="middle" class="head">JobCard</text>
+    <text x="20" y="92" class="item">+ job_id</text>
+    <text x="20" y="120" class="item">+ vehicle_id</text>
+    <text x="20" y="148" class="item">+ service_date</text>
+    <text x="20" y="176" class="item">+ status</text>
+    <text x="20" y="204" class="item">+ estimated_cost</text>
+    <text x="20" y="232" class="item">+ actual_cost</text>
+    <text x="20" y="282" class="item">+ createJobCard()</text>
+  </g>
+
+  <g transform="translate(1140,590)">
+    <rect width="430" height="340" class="cls" />
+    <line x1="0" y1="58" x2="430" y2="58" class="line" />
+    <line x1="0" y1="275" x2="430" y2="275" class="line" />
+    <text x="215" y="37" text-anchor="middle" class="head">Bill</text>
+    <text x="20" y="92" class="item">+ bill_id</text>
+    <text x="20" y="120" class="item">+ job_id</text>
+    <text x="20" y="148" class="item">+ vehicle_id</text>
+    <text x="20" y="176" class="item">+ bill_number</text>
+    <text x="20" y="204" class="item">+ subtotal</text>
+    <text x="20" y="232" class="item">+ tax</text>
+    <text x="20" y="260" class="item">+ total</text>
+    <text x="20" y="312" class="item">+ generateBill()</text>
+  </g>
+
+  <g transform="translate(360,1020)">
+    <rect width="400" height="260" class="cls" />
+    <line x1="0" y1="58" x2="400" y2="58" class="line" />
+    <line x1="0" y1="208" x2="400" y2="208" class="line" />
+    <text x="200" y="37" text-anchor="middle" class="head">SparePart</text>
+    <text x="20" y="92" class="item">+ part_id</text>
+    <text x="20" y="120" class="item">+ part_name</text>
+    <text x="20" y="148" class="item">+ part_number</text>
+    <text x="20" y="176" class="item">+ stock_qty</text>
+    <text x="20" y="204" class="item">+ unit_price</text>
+    <text x="20" y="238" class="item">+ updateStock()</text>
+  </g>
+
+  <g transform="translate(910,1020)">
+    <rect width="400" height="260" class="cls" />
+    <line x1="0" y1="58" x2="400" y2="58" class="line" />
+    <line x1="0" y1="208" x2="400" y2="208" class="line" />
+    <text x="200" y="37" text-anchor="middle" class="head">Battery</text>
+    <text x="20" y="92" class="item">+ battery_id</text>
+    <text x="20" y="120" class="item">+ battery_name</text>
+    <text x="20" y="148" class="item">+ battery_code</text>
+    <text x="20" y="176" class="item">+ stock_qty</text>
+    <text x="20" y="204" class="item">+ warranty_months</text>
+    <text x="20" y="238" class="item">+ updateStock()</text>
+  </g>
+
+  <path d="M440 275 L520 275" class="arrow" />
+  <text x="480" y="255" text-anchor="middle" class="hint">1 role : many users</text>
+
+  <path d="M950 290 L1030 290" class="arrow" />
+  <text x="990" y="270" text-anchor="middle" class="hint">manages</text>
+
+  <path d="M1450 290 L1530 290" class="arrow" />
+  <text x="1490" y="270" text-anchor="middle" class="hint">references</text>
+
+  <path d="M1240 430 L320 590" class="arrow" />
+  <text x="760" y="485" text-anchor="middle" class="hint">vehicle has services</text>
+
+  <path d="M1290 430 L845 590" class="arrow" />
+  <text x="1080" y="500" text-anchor="middle" class="hint">vehicle has job cards</text>
+
+  <path d="M550 730 L630 730" class="arrow" />
+  <text x="590" y="710" text-anchor="middle" class="hint">service workflow</text>
+
+  <path d="M1060 760 L1140 760" class="arrow" />
+  <text x="1100" y="740" text-anchor="middle" class="hint">creates bill</text>
+
+  <path d="M450 870 L520 1020" class="arrow" />
+  <text x="470" y="955" text-anchor="middle" class="hint">uses parts</text>
+
+  <path d="M900 900 L1080 1020" class="arrow" />
+  <text x="980" y="970" text-anchor="middle" class="hint">uses batteries</text>
+
+  <path d="M730 470 L1220 1020" class="arrow" />
+  <text x="1010" y="760" text-anchor="middle" class="hint">inventory access</text>
+</svg>

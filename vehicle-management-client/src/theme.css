@@ -546,3 +546,157 @@
   background-color: #3b82f6;
   border-color: #3b82f6;
 }
+
+.homepage-vehicle-slider {
+  overflow: hidden;
+  position: relative;
+}
+
+.homepage-vehicle-slider::before,
+.homepage-vehicle-slider::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 72px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.homepage-vehicle-slider::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--surface-1), transparent);
+}
+
+.homepage-vehicle-slider::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--surface-1), transparent);
+}
+
+.homepage-vehicle-track {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: max-content;
+  animation: homepageVehicleSlide 24s linear infinite;
+}
+
+.homepage-vehicle-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 180px;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 22px;
+  background: var(--surface-2);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+.homepage-vehicle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: var(--icon-bg);
+  color: var(--icon-fg);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.homepage-vehicle-label {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.homepage-brand-slider {
+  overflow: hidden;
+  position: relative;
+}
+
+.homepage-brand-slider::before,
+.homepage-brand-slider::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 84px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.homepage-brand-slider::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--surface-1), transparent);
+}
+
+.homepage-brand-slider::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--surface-1), transparent);
+}
+
+.homepage-brand-track {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: max-content;
+  animation: homepageBrandSlide 52s linear infinite;
+}
+
+.homepage-brand-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: 220px;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 22px;
+  background: linear-gradient(135deg, var(--surface-2), var(--surface-1));
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+.homepage-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--icon-bg);
+  color: var(--icon-fg);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.homepage-brand-label {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+@keyframes homepageVehicleSlide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes homepageBrandSlide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

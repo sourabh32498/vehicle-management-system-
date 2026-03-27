@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="980" viewBox="0 0 1400 980">
+  <defs>
+    <style>
+      .title { font: 700 28px Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 700 22px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 16px Arial, sans-serif; fill: #1f2937; }
+      .small { font: 14px Arial, sans-serif; fill: #475569; }
+      .core { fill: #eff6ff; stroke: #2563eb; stroke-width: 3; rx: 28; ry: 28; }
+      .goal { fill: #ffffff; stroke: #1d4ed8; stroke-width: 2.5; rx: 20; ry: 20; }
+      .impact { fill: #f8fafc; stroke: #0f766e; stroke-width: 3; rx: 22; ry: 22; }
+      .line { stroke: #334155; stroke-width: 2.5; fill: none; }
+    </style>
+  </defs>
+
+  <rect x="30" y="30" width="1340" height="920" fill="#ffffff" stroke="#dbeafe" stroke-width="2" rx="24" ry="24" />
+  <text x="700" y="78" text-anchor="middle" class="title">Vehicle Management System Objective Diagram</text>
+
+  <rect x="470" y="130" width="460" height="120" class="core" />
+  <text x="700" y="185" text-anchor="middle" class="subtitle">Vehicle Management</text>
+  <text x="700" y="215" text-anchor="middle" class="subtitle">System</text>
+
+  <rect x="110" y="340" width="260" height="120" class="goal" />
+  <text x="240" y="388" text-anchor="middle" class="subtitle">Manage Vehicle</text>
+  <text x="240" y="418" text-anchor="middle" class="subtitle">Records</text>
+  <text x="240" y="444" text-anchor="middle" class="small">Store, update, and track</text>
+
+  <rect x="410" y="340" width="260" height="120" class="goal" />
+  <text x="540" y="388" text-anchor="middle" class="subtitle">Maintain Owner</text>
+  <text x="540" y="418" text-anchor="middle" class="subtitle">&amp; Driver Details</text>
+  <text x="540" y="444" text-anchor="middle" class="small">Organize related information</text>
+
+  <rect x="730" y="340" width="260" height="120" class="goal" />
+  <text x="860" y="388" text-anchor="middle" class="subtitle">Track Maintenance</text>
+  <text x="860" y="418" text-anchor="middle" class="subtitle">History</text>
+  <text x="860" y="444" text-anchor="middle" class="small">Monitor servicing records</text>
+
+  <rect x="1030" y="340" width="260" height="120" class="goal" />
+  <text x="1160" y="388" text-anchor="middle" class="subtitle">Monitor Insurance</text>
+  <text x="1160" y="418" text-anchor="middle" class="subtitle">&amp; Expiry Dates</text>
+  <text x="1160" y="444" text-anchor="middle" class="small">Track important documents</text>
+
+  <rect x="260" y="560" width="300" height="120" class="goal" />
+  <text x="410" y="608" text-anchor="middle" class="subtitle">Check Vehicle</text>
+  <text x="410" y="638" text-anchor="middle" class="subtitle">Availability</text>
+  <text x="410" y="664" text-anchor="middle" class="small">Know current status quickly</text>
+
+  <rect x="590" y="560" width="220" height="120" class="goal" />
+  <text x="700" y="608" text-anchor="middle" class="subtitle">Search, Update,</text>
+  <text x="700" y="638" text-anchor="middle" class="subtitle">Delete Records</text>
+  <text x="700" y="664" text-anchor="middle" class="small">Support admin operations</text>
+
+  <rect x="840" y="560" width="300" height="120" class="goal" />
+  <text x="990" y="608" text-anchor="middle" class="subtitle">Generate Reports</text>
+  <text x="990" y="638" text-anchor="middle" class="subtitle">for Administration</text>
+  <text x="990" y="664" text-anchor="middle" class="small">Summarize data for decisions</text>
+
+  <rect x="385" y="790" width="630" height="95" class="impact" />
+  <text x="700" y="835" text-anchor="middle" class="subtitle">Reduce manual work, improve accuracy, speed, and data accessibility</text>
+
+  <line x1="700" y1="250" x2="240" y2="340" class="line" />
+  <line x1="700" y1="250" x2="540" y2="340" class="line" />
+  <line x1="700" y1="250" x2="860" y2="340" class="line" />
+  <line x1="700" y1="250" x2="1160" y2="340" class="line" />
+  <line x1="700" y1="250" x2="410" y2="560" class="line" />
+  <line x1="700" y1="250" x2="700" y2="560" class="line" />
+  <line x1="700" y1="250" x2="990" y2="560" class="line" />
+
+  <line x1="240" y1="460" x2="520" y2="790" class="line" />
+  <line x1="540" y1="460" x2="610" y2="790" class="line" />
+  <line x1="860" y1="460" x2="790" y2="790" class="line" />
+  <line x1="1160" y1="460" x2="880" y2="790" class="line" />
+  <line x1="410" y1="680" x2="610" y2="790" class="line" />
+  <line x1="700" y1="680" x2="700" y2="790" class="line" />
+  <line x1="990" y1="680" x2="790" y2="790" class="line" />
+</svg>

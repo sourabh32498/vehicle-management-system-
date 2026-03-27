@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1080" viewBox="0 0 1600 1080">
+  <defs>
+    <style>
+      .title { font: 700 32px Arial, sans-serif; fill: #0f172a; }
+      .actor { font: 700 22px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 17px Arial, sans-serif; fill: #1f2937; }
+      .small { font: 14px Arial, sans-serif; fill: #475569; }
+      .system { fill: #f8fbff; stroke: #93c5fd; stroke-width: 3; rx: 30; ry: 30; }
+      .usecase { fill: #ffffff; stroke: #2563eb; stroke-width: 2.5; }
+      .line { stroke: #334155; stroke-width: 2.2; fill: none; stroke-linecap: round; }
+      .stick { stroke: #0f172a; stroke-width: 3.2; fill: none; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <rect x="30" y="30" width="1540" height="1020" fill="#ffffff" stroke="#dbeafe" stroke-width="2" rx="28" ry="28" />
+  <text x="800" y="86" text-anchor="middle" class="title">Vehicle Management System Use Case Diagram</text>
+
+  <rect x="350" y="130" width="900" height="840" class="system" />
+  <text x="800" y="172" text-anchor="middle" class="actor">Vehicle Management System</text>
+
+  <ellipse cx="575" cy="250" rx="145" ry="44" class="usecase" />
+  <text x="575" y="256" text-anchor="middle" class="label">Login</text>
+
+  <ellipse cx="575" cy="380" rx="165" ry="44" class="usecase" />
+  <text x="575" y="386" text-anchor="middle" class="label">View Dashboard</text>
+
+  <ellipse cx="575" cy="510" rx="205" ry="44" class="usecase" />
+  <text x="575" y="516" text-anchor="middle" class="label">Manage Users &amp; Roles</text>
+
+  <ellipse cx="575" cy="640" rx="165" ry="44" class="usecase" />
+  <text x="575" y="646" text-anchor="middle" class="label">Manage Vehicles</text>
+
+  <ellipse cx="575" cy="770" rx="165" ry="44" class="usecase" />
+  <text x="575" y="776" text-anchor="middle" class="label">Manage Services</text>
+
+  <ellipse cx="1025" cy="250" rx="180" ry="44" class="usecase" />
+  <text x="1025" y="256" text-anchor="middle" class="label">Manage Job Cards</text>
+
+  <ellipse cx="1025" cy="380" rx="145" ry="44" class="usecase" />
+  <text x="1025" y="386" text-anchor="middle" class="label">Manage Bills</text>
+
+  <ellipse cx="1025" cy="510" rx="190" ry="44" class="usecase" />
+  <text x="1025" y="516" text-anchor="middle" class="label">Manage Spare Parts</text>
+
+  <ellipse cx="1025" cy="640" rx="170" ry="44" class="usecase" />
+  <text x="1025" y="646" text-anchor="middle" class="label">Manage Batteries</text>
+
+  <ellipse cx="1025" cy="770" rx="150" ry="44" class="usecase" />
+  <text x="1025" y="776" text-anchor="middle" class="label">View Reports</text>
+
+  <ellipse cx="800" cy="895" rx="130" ry="44" class="usecase" />
+  <text x="800" y="901" text-anchor="middle" class="label">Logout</text>
+
+  <g transform="translate(120,300)">
+    <circle cx="0" cy="0" r="22" class="stick" />
+    <line x1="0" y1="22" x2="0" y2="102" class="stick" />
+    <line x1="-42" y1="54" x2="42" y2="54" class="stick" />
+    <line x1="0" y1="102" x2="-32" y2="166" class="stick" />
+    <line x1="0" y1="102" x2="32" y2="166" class="stick" />
+    <text x="0" y="210" text-anchor="middle" class="actor">Super Admin</text>
+  </g>
+
+  <g transform="translate(120,670)">
+    <circle cx="0" cy="0" r="22" class="stick" />
+    <line x1="0" y1="22" x2="0" y2="102" class="stick" />
+    <line x1="-42" y1="54" x2="42" y2="54" class="stick" />
+    <line x1="0" y1="102" x2="-32" y2="166" class="stick" />
+    <line x1="0" y1="102" x2="32" y2="166" class="stick" />
+    <text x="0" y="210" text-anchor="middle" class="actor">Staff</text>
+  </g>
+
+  <g transform="translate(1460,470)">
+    <circle cx="0" cy="0" r="22" class="stick" />
+    <line x1="0" y1="22" x2="0" y2="102" class="stick" />
+    <line x1="-42" y1="54" x2="42" y2="54" class="stick" />
+    <line x1="0" y1="102" x2="-32" y2="166" class="stick" />
+    <line x1="0" y1="102" x2="32" y2="166" class="stick" />
+    <text x="0" y="210" text-anchor="middle" class="actor">Admin</text>
+  </g>
+
+  <line x1="165" y1="295" x2="430" y2="250" class="line" />
+  <line x1="165" y1="320" x2="410" y2="380" class="line" />
+  <line x1="165" y1="345" x2="370" y2="510" class="line" />
+  <line x1="165" y1="370" x2="410" y2="640" class="line" />
+  <line x1="165" y1="395" x2="410" y2="770" class="line" />
+  <line x1="165" y1="280" x2="845" y2="250" class="line" />
+  <line x1="165" y1="335" x2="835" y2="510" class="line" />
+  <line x1="165" y1="360" x2="855" y2="640" class="line" />
+  <line x1="165" y1="385" x2="875" y2="770" class="line" />
+  <line x1="165" y1="410" x2="670" y2="895" class="line" />
+
+  <line x1="165" y1="690" x2="430" y2="250" class="line" />
+  <line x1="165" y1="720" x2="410" y2="380" class="line" />
+  <line x1="165" y1="750" x2="410" y2="640" class="line" />
+  <line x1="165" y1="780" x2="410" y2="770" class="line" />
+  <line x1="165" y1="810" x2="670" y2="895" class="line" />
+
+  <line x1="1415" y1="530" x2="1170" y2="380" class="line" />
+  <line x1="1415" y1="555" x2="1215" y2="510" class="line" />
+  <line x1="1415" y1="580" x2="1195" y2="640" class="line" />
+  <line x1="1415" y1="605" x2="1175" y2="770" class="line" />
+  <line x1="1415" y1="505" x2="1160" y2="250" class="line" />
+  <line x1="1415" y1="630" x2="930" y2="895" class="line" />
+
+  <text x="800" y="1015" text-anchor="middle" class="small">Actors interact with modules based on system role and permissions.</text>
+</svg>

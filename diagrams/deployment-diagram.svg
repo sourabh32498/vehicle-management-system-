@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <style>
+      .title { font: 700 28px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 700 20px Arial, sans-serif; fill: #0f172a; }
+      .text { font: 16px Arial, sans-serif; fill: #1f2937; }
+      .small { font: 14px Arial, sans-serif; fill: #475569; }
+      .node { fill: #ffffff; stroke: #2563eb; stroke-width: 2.5; rx: 20; ry: 20; }
+      .server { fill: #eff6ff; stroke: #1d4ed8; stroke-width: 3; rx: 22; ry: 22; }
+      .database { fill: #ecfeff; stroke: #0f766e; stroke-width: 3; rx: 22; ry: 22; }
+      .network { fill: #f8fafc; stroke: #94a3b8; stroke-width: 2.5; rx: 20; ry: 20; }
+      .arrow { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0,0 10,5 0,10" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect x="30" y="30" width="1340" height="840" fill="#ffffff" stroke="#dbeafe" stroke-width="2" rx="24" ry="24" />
+  <text x="700" y="78" text-anchor="middle" class="title">Vehicle Management System Deployment Diagram</text>
+
+  <rect x="110" y="240" width="300" height="220" class="node" />
+  <text x="260" y="295" text-anchor="middle" class="label">Client Device</text>
+  <text x="260" y="330" text-anchor="middle" class="text">Desktop / Laptop</text>
+  <text x="260" y="360" text-anchor="middle" class="text">Web Browser</text>
+  <text x="260" y="400" text-anchor="middle" class="small">User accesses the system interface</text>
+
+  <rect x="500" y="300" width="400" height="100" class="network" />
+  <text x="700" y="357" text-anchor="middle" class="label">Internet / Local Network</text>
+
+  <rect x="990" y="170" width="280" height="320" class="server" />
+  <text x="1130" y="230" text-anchor="middle" class="label">Application Server</text>
+  <text x="1130" y="270" text-anchor="middle" class="text">Node.js Runtime</text>
+  <text x="1130" y="300" text-anchor="middle" class="text">Express.js API</text>
+  <text x="1130" y="330" text-anchor="middle" class="text">Business Logic</text>
+  <text x="1130" y="380" text-anchor="middle" class="small">Handles requests and responses</text>
+
+  <rect x="990" y="560" width="280" height="180" class="database" />
+  <text x="1130" y="620" text-anchor="middle" class="label">Database Server</text>
+  <text x="1130" y="660" text-anchor="middle" class="text">MongoDB</text>
+  <text x="1130" y="690" text-anchor="middle" class="small">Stores vehicle, owner,</text>
+  <text x="1130" y="715" text-anchor="middle" class="small">service, and insurance data</text>
+
+  <path d="M410 350 L500 350" class="arrow" />
+  <path d="M900 350 L990 350" class="arrow" />
+  <path d="M1130 490 L1130 560" class="arrow" />
+
+  <text x="450" y="335" text-anchor="middle" class="small">HTTP Request</text>
+  <text x="945" y="335" text-anchor="middle" class="small">HTTP Response</text>
+  <text x="1165" y="530" text-anchor="middle" class="small">Store / Retrieve Data</text>
+</svg>

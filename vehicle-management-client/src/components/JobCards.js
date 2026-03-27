@@ -1,9 +1,21 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaSearch, FaSyncAlt, FaClipboardList } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
+import {
+  FaEdit,
+  FaTrash,
+  FaPlus,
+  FaTimes,
+  FaSearch,
+  FaSyncAlt,
+  FaClipboardList,
+  FaFileInvoiceDollar,
+  FaPrint,
+} from "react-icons/fa";
 import "./ServiceList.css";
 
 function JobCards() {
+  const location = useLocation();
   const [jobCards, setJobCards] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -13,6 +25,9 @@ function JobCards() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [feedback, setFeedback] = useState({ type: "", message: "" });
+  const [billingCard, setBillingCard] = useState(null);
+  const [bills, setBills] = useState([]);
+  const [savingBill, setSavingBill] = useState(false);
 
   const [form, setForm] = useState({
     vehicle_id: "",
@@ -44,18 +59,39 @@ function JobCards() {
     []
   );
 
+  const fetchBills = useCallback(
+    () =>
+      axios
+        .get("http://localhost:5000/bills")
+        .then((res) => setBills(Array.isArray(res.data) ? res.data : []))
+        .catch((err) => {
+          console.error(err);
+          setBills([]);
+        }),
+    []
+  );
+
   const fetchInitialData = useCallback(async () => {
     setLoading(true);
     try {
-      await Promise.all([fetchJobCards(), fetchVehicles()]);
+      await Promise.all([fetchJobCards(), fetchVehicles(), fetchBills()]);
     } finally {
       setLoading(false);
     }
-  }, [fetchJobCards, fetchVehicles]);
+  }, [fetchBills, fetchJobCards, fetchVehicles]);
 
   useEffect(() => {
     fetchInitialData();
   }, [fetchInitialData]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const status = params.get("status");
+    const search = params.get("search");
+
+    setStatusFilter(status || "All");
+    setQuery(search || "");
+  }, [location.search]);
 
   const filteredJobCards = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -87,6 +123,12 @@ function JobCards() {
 
     return { pending, inProgress, completed };
   }, [jobCards]);
+
+  const recentBills = useMemo(() => bills.slice(0, 5), [bills]);
+  const billsByNumber = useMemo(
+    () => new Map(bills.map((bill) => [bill.bill_number, bill])),
+    [bills]
+  );
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -165,6 +207,9 @@ function JobCards() {
           type: "success",
           message: editingCard ? "Job card updated successfully." : "Job card added successfully.",
         });
+        if (!editingCard) {
+          window.alert("Job card added successfully.");
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -199,13 +244,102 @@ function JobCards() {
     return `Rs ${amount.toFixed(2)}`;
   };
 
+  const formatDate = (value) => {
+    if (!value) return "-";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value).slice(0, 10);
+    return date.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const buildBillData = useCallback((card) => {
+    if (!card) return null;
+
+    const subtotal = Number(card.actual_cost ?? card.estimated_cost ?? 0);
+    const safeSubtotal = Number.isFinite(subtotal) ? subtotal : 0;
+    const taxRate = 0.18;
+    const tax = safeSubtotal * taxRate;
+
+    return {
+      ...card,
+      billNumber: `BILL-${String(card.job_id).padStart(4, "0")}`,
+      customerName: card.vehicle_owner || "Walk-in Customer",
+      vehicleName: card.vehicle_model || `Vehicle #${card.vehicle_id}`,
+      registration: card.vehicle_registration || card.registration || "-",
+      issuedOn: formatDate(new Date()),
+      serviceOn: formatDate(card.service_date),
+      notes: card.remarks || "Workshop service charges as per completed job card.",
+      subtotal: safeSubtotal,
+      tax,
+      total: safeSubtotal + tax,
+    };
+  }, []);
+
+  const handleOpenBill = (card) => {
+    setBillingCard(buildBillData(card));
+  };
+
+  const handleCloseBill = () => {
+    setBillingCard(null);
+  };
+
+  const handlePrintBill = () => {
+    if (!billingCard) return;
+    window.print();
+  };
+
+  const handleSaveBill = async () => {
+    if (!billingCard || savingBill) return;
+
+    setSavingBill(true);
+    try {
+      let authUser = {};
+      try {
+        authUser = JSON.parse(localStorage.getItem("auth_user") || "{}");
+      } catch (parseError) {
+        authUser = {};
+      }
+      await axios.post("http://localhost:5000/bills", {
+        job_id: billingCard.job_id,
+        vehicle_id: billingCard.vehicle_id,
+        bill_number: billingCard.billNumber,
+        customer_name: billingCard.customerName,
+        vehicle_name: billingCard.vehicleName,
+        registration: billingCard.registration,
+        service_date: billingCard.service_date || null,
+        status: billingCard.status,
+        notes: billingCard.notes,
+        subtotal: billingCard.subtotal,
+        tax: billingCard.tax,
+        total: billingCard.total,
+        created_by: authUser.name || authUser.username || "System",
+      });
+
+      await fetchBills();
+      setFeedback({ type: "success", message: `Bill ${billingCard.billNumber} saved successfully.` });
+    } catch (err) {
+      console.error(err);
+      setFeedback({
+        type: "danger",
+        message: err.response?.data?.error || "Failed to save bill.",
+      });
+    } finally {
+      setSavingBill(false);
+    }
+  };
+
+  const savedBillRecord = billingCard ? billsByNumber.get(billingCard.billNumber) : null;
+
   return (
     <div className="container py-4 entity-page jobcards-page">
-      <div className="card border-0 shadow-sm mb-4 entity-hero">
+      <div className="card border-0 shadow-sm mb-4 entity-hero entity-fade">
         <div className="card-body d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
           <div>
-            <h2 className="mb-1">Job Card Management</h2>
-            <p className="text-muted mb-0">Create and track workshop job cards efficiently.</p>
+            <h2 className="mb-1">Job Card Operations</h2>
+            <p className="text-muted mb-0">Create, review, and manage workshop job cards from one admin workspace.</p>
           </div>
           <div className="d-flex gap-2 flex-wrap">
             <button className="btn btn-success" onClick={() => handleOpenModal()}>
@@ -222,13 +356,13 @@ function JobCards() {
 
       <div className="row g-3 mb-4">
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card stat-card border-0 shadow-sm h-100">
+          <div className="card stat-card border-0 shadow-sm h-100 entity-fade entity-delay-1">
             <div className="card-body d-flex justify-content-between align-items-center">
               <div>
                 <small className="text-muted">Total Job Cards</small>
                 <h3 className="mb-0">{jobCards.length}</h3>
               </div>
-              <span className="stat-chip bg-dark-subtle text-dark">
+              <span className="stat-chip stat-icon-slate">
                 <FaClipboardList />
               </span>
             </div>
@@ -236,7 +370,7 @@ function JobCards() {
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card stat-card border-0 shadow-sm h-100">
+          <div className="card stat-card border-0 shadow-sm h-100 entity-fade entity-delay-2">
             <div className="card-body">
               <small className="text-muted d-block">Pending</small>
               <h3 className="mb-0">{metrics.pending}</h3>
@@ -245,7 +379,7 @@ function JobCards() {
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card stat-card border-0 shadow-sm h-100">
+          <div className="card stat-card border-0 shadow-sm h-100 entity-fade entity-delay-3">
             <div className="card-body">
               <small className="text-muted d-block">In Progress</small>
               <h3 className="mb-0">{metrics.inProgress}</h3>
@@ -254,7 +388,7 @@ function JobCards() {
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card stat-card border-0 shadow-sm h-100">
+          <div className="card stat-card border-0 shadow-sm h-100 entity-fade entity-delay-4">
             <div className="card-body">
               <small className="text-muted d-block">Completed</small>
               <h3 className="mb-0">{metrics.completed}</h3>
@@ -263,9 +397,46 @@ function JobCards() {
         </div>
       </div>
 
-      <div className="card border-0 shadow-sm">
+      <div className="card border-0 shadow-sm entity-fade entity-delay-2 mb-4">
+        <div className="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+          <h5 className="mb-0">Saved Bill History</h5>
+          <span className="text-muted small">{bills.length} bills saved</span>
+        </div>
+        <div className="table-responsive">
+          <table className="table table-hover align-middle mb-0">
+            <thead className="table-light">
+              <tr>
+                <th>Bill No</th>
+                <th>Customer</th>
+                <th>Vehicle</th>
+                <th>Created</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentBills.length > 0 ? (
+                recentBills.map((bill) => (
+                  <tr key={bill.bill_id}>
+                    <td>{bill.bill_number}</td>
+                    <td>{bill.customer_name}</td>
+                    <td>{bill.vehicle_name}</td>
+                    <td>{formatDate(bill.created_at)}</td>
+                    <td>{formatCurrency(bill.total)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center py-4">No saved bills yet.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="card border-0 shadow-sm entity-fade entity-delay-2">
         <div className="card-header bg-white border-0 pt-3 d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-lg-center">
-          <h5 className="mb-0">Job Card List</h5>
+          <h5 className="mb-0">Job Card Register</h5>
           <div className="d-flex gap-2 flex-wrap">
             <div className="search-box input-group">
               <span className="input-group-text bg-white">
@@ -274,7 +445,7 @@ function JobCards() {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Search by vehicle, status, remarks"
+                placeholder="Search by vehicle, status, or remarks"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -339,7 +510,14 @@ function JobCards() {
                     <td>{formatCurrency(card.actual_cost)}</td>
                     <td>{card.remarks || "-"}</td>
                     <td>
-                      <div className="d-flex gap-2">
+                      <div className="d-flex flex-wrap gap-2">
+                        <button
+                          className="btn btn-outline-secondary btn-sm"
+                          onClick={() => handleOpenBill(card)}
+                          title="Generate Bill"
+                        >
+                          <FaFileInvoiceDollar />
+                        </button>
                         <button className="btn btn-primary btn-sm" onClick={() => handleOpenModal(card)}>
                           <FaEdit />
                         </button>
@@ -352,7 +530,7 @@ function JobCards() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="8" className="text-center py-4">No job cards found.</td>
+                  <td colSpan="8" className="text-center py-4">No matching job cards found.</td>
                 </tr>
               )}
             </tbody>
@@ -457,6 +635,88 @@ function JobCards() {
               <button className="btn btn-success" onClick={handleSubmit}>
                 {editingCard ? "Update Job Card" : "Add Job Card"}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {billingCard && (
+        <div className="custom-modal bill-modal-shell">
+          <div className="custom-modal-content bill-modal-content">
+            <div className="custom-modal-header bill-header">
+              <div>
+                <div className="bill-kicker">Generated Bill</div>
+                <h5>Invoice {billingCard.billNumber}</h5>
+                {savedBillRecord ? (
+                  <div className="bill-saved-note">Saved on {formatDate(savedBillRecord.created_at)}</div>
+                ) : null}
+              </div>
+              <div className="d-flex gap-2">
+                <button
+                  className="btn btn-success"
+                  onClick={handleSaveBill}
+                  disabled={savingBill || !!savedBillRecord}
+                >
+                  {savedBillRecord ? "Saved" : savingBill ? "Saving..." : "Save Bill"}
+                </button>
+                <button className="btn btn-outline-secondary" onClick={handlePrintBill}>
+                  <FaPrint className="me-2" />
+                  Print
+                </button>
+                <button className="btn-close" onClick={handleCloseBill}>
+                  <FaTimes />
+                </button>
+              </div>
+            </div>
+
+            <div className="custom-modal-body bill-body">
+              <div className="bill-top-grid">
+                <div className="bill-panel">
+                  <div className="bill-section-title">Customer</div>
+                  <div className="bill-strong">{billingCard.customerName}</div>
+                  <div>{billingCard.vehicleName}</div>
+                  <div>Registration: {billingCard.registration}</div>
+                </div>
+
+                <div className="bill-panel">
+                  <div className="bill-section-title">Invoice Info</div>
+                  <div>Issued: {billingCard.issuedOn}</div>
+                  <div>Service Date: {billingCard.serviceOn}</div>
+                  <div>Status: {billingCard.status || "Pending"}</div>
+                </div>
+              </div>
+
+              <div className="bill-table-wrap">
+                <table className="table align-middle mb-0 bill-table">
+                  <thead>
+                    <tr>
+                      <th>Description</th>
+                      <th className="text-end">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        Workshop charges for job card #{billingCard.job_id}
+                        <div className="bill-row-note">{billingCard.notes}</div>
+                      </td>
+                      <td className="text-end">{formatCurrency(billingCard.subtotal)}</td>
+                    </tr>
+                    <tr>
+                      <td>GST (18%)</td>
+                      <td className="text-end">{formatCurrency(billingCard.tax)}</td>
+                    </tr>
+                    <tr className="bill-total-row">
+                      <td>Total Payable</td>
+                      <td className="text-end">{formatCurrency(billingCard.total)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bill-footer-note">
+                Thank you for choosing VehicleOps workshop services.
+              </div>
             </div>
           </div>
         </div>

@@ -4,9 +4,10 @@
   "description": "Combined frontend and backend runner",
   "main": "index.js",
   "scripts": {
-    "start:client": "npm start --prefix vehicle-management-client",
-    "start:server": "nodemon server.js --prefix vehicle-management-server",
-    "start:all": "concurrently \"npm start --prefix vehicle-management-client\" \"nodemon server.js --prefix vehicle-management-server\"",
+    "start:client": "npm --prefix ../vehicle-management-client start",
+    "start:server": "node server.js",
+    "dev": "nodemon server.js",
+    "start:all": "concurrently \"npm --prefix ../vehicle-management-client start\" \"node server.js\"",
     "start": "node server.js"
   },
   "keywords": [],

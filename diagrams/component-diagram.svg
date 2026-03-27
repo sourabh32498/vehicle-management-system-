@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="980" viewBox="0 0 1400 980">
+  <defs>
+    <style>
+      .title { font: 700 28px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 700 20px Arial, sans-serif; fill: #0f172a; }
+      .text { font: 16px Arial, sans-serif; fill: #1f2937; }
+      .small { font: 14px Arial, sans-serif; fill: #475569; }
+      .package { fill: #f8fbff; stroke: #93c5fd; stroke-width: 3; rx: 24; ry: 24; }
+      .component { fill: #ffffff; stroke: #2563eb; stroke-width: 2.5; rx: 18; ry: 18; }
+      .module { fill: #eff6ff; stroke: #1d4ed8; stroke-width: 2.5; rx: 18; ry: 18; }
+      .database { fill: #ecfeff; stroke: #0f766e; stroke-width: 2.5; }
+      .arrow { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0,0 10,5 0,10" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect x="30" y="30" width="1340" height="920" fill="#ffffff" stroke="#dbeafe" stroke-width="2" rx="24" ry="24" />
+  <text x="700" y="78" text-anchor="middle" class="title">Vehicle Management System Component Diagram</text>
+
+  <rect x="120" y="140" width="1160" height="740" class="package" />
+  <text x="700" y="182" text-anchor="middle" class="label">Vehicle Management System</text>
+
+  <rect x="190" y="250" width="250" height="110" class="component" />
+  <text x="315" y="300" text-anchor="middle" class="label">Frontend UI</text>
+  <text x="315" y="330" text-anchor="middle" class="text">React, HTML, CSS, JS</text>
+
+  <rect x="575" y="250" width="250" height="110" class="component" />
+  <text x="700" y="300" text-anchor="middle" class="label">Backend API</text>
+  <text x="700" y="330" text-anchor="middle" class="text">Node.js and Express.js</text>
+
+  <rect x="960" y="250" width="250" height="110" class="database" rx="18" ry="18" />
+  <text x="1085" y="300" text-anchor="middle" class="label">MongoDB</text>
+  <text x="1085" y="330" text-anchor="middle" class="text">Database</text>
+
+  <rect x="180" y="500" width="220" height="110" class="module" />
+  <text x="290" y="545" text-anchor="middle" class="label">Vehicle Module</text>
+  <text x="290" y="575" text-anchor="middle" class="small">Registration and status</text>
+
+  <rect x="450" y="500" width="220" height="110" class="module" />
+  <text x="560" y="545" text-anchor="middle" class="label">Owner Module</text>
+  <text x="560" y="575" text-anchor="middle" class="small">Owner and driver details</text>
+
+  <rect x="730" y="500" width="220" height="110" class="module" />
+  <text x="840" y="545" text-anchor="middle" class="label">Maintenance Module</text>
+  <text x="840" y="575" text-anchor="middle" class="small">Service history and repairs</text>
+
+  <rect x="1000" y="500" width="220" height="110" class="module" />
+  <text x="1110" y="545" text-anchor="middle" class="label">Insurance Module</text>
+  <text x="1110" y="575" text-anchor="middle" class="small">Expiry and document tracking</text>
+
+  <rect x="515" y="700" width="370" height="100" class="module" />
+  <text x="700" y="745" text-anchor="middle" class="label">Reporting Module</text>
+  <text x="700" y="775" text-anchor="middle" class="small">Administrative report generation</text>
+
+  <path d="M440 305 L575 305" class="arrow" />
+  <path d="M825 305 L960 305" class="arrow" />
+
+  <path d="M700 360 L290 500" class="arrow" />
+  <path d="M700 360 L560 500" class="arrow" />
+  <path d="M700 360 L840 500" class="arrow" />
+  <path d="M700 360 L1110 500" class="arrow" />
+  <path d="M700 360 L700 700" class="arrow" />
+
+  <path d="M400 555 L960 305" class="arrow" />
+  <path d="M670 555 L960 305" class="arrow" />
+  <path d="M950 555 L960 350" class="arrow" />
+  <path d="M1110 610 L1085 360" class="arrow" />
+  <path d="M885 750 L1020 360" class="arrow" />
+</svg>

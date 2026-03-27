@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { FaEdit, FaTrash, FaPlus, FaTimes, FaSearch, FaSyncAlt, FaWrench } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 import "./ServiceList.css";
 
 function ServiceList() {
+  const location = useLocation();
   const [services, setServices] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [serviceMaster, setServiceMaster] = useState([]);
@@ -13,6 +15,7 @@ function ServiceList() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [feedback, setFeedback] = useState({ type: "", message: "" });
+  const [serviceMasterError, setServiceMasterError] = useState("");
   const [form, setForm] = useState({
     vehicle_id: "",
     service_type: "",
@@ -47,10 +50,14 @@ function ServiceList() {
     () =>
       axios
         .get("http://localhost:5000/service-master")
-        .then((res) => setServiceMaster(Array.isArray(res.data) ? res.data : []))
+        .then((res) => {
+          setServiceMaster(Array.isArray(res.data) ? res.data : []);
+          setServiceMasterError("");
+        })
         .catch((err) => {
           console.error(err);
           setServiceMaster([]);
+          setServiceMasterError(err.response?.data?.error || "Failed to load service types.");
         }),
     []
   );
@@ -67,6 +74,15 @@ function ServiceList() {
   useEffect(() => {
     fetchInitialData();
   }, [fetchInitialData]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const status = params.get("status");
+    const search = params.get("search");
+
+    setStatusFilter(status || "All");
+    setQuery(search || "");
+  }, [location.search]);
 
   const filteredServices = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -184,6 +200,9 @@ function ServiceList() {
           type: "success",
           message: editingService ? "Service updated successfully." : "Service added successfully.",
         });
+        if (!editingService) {
+          window.alert("Service added successfully.");
+        }
       })
       .catch((err) => {
         setError(err.response?.data?.error || "Failed to save service.");
@@ -216,11 +235,11 @@ function ServiceList() {
 
   return (
     <div className="container py-4 entity-page services-page">
-      <div className="card border-0 shadow-sm mb-4 entity-hero">
+      <div className="card border-0 shadow-sm mb-4 entity-hero entity-fade">
         <div className="card-body d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
           <div>
-            <h2 className="mb-1">Service Management</h2>
-            <p className="text-muted mb-0">Track services, statuses, and revenue in one place.</p>
+            <h2 className="mb-1">Service Operations</h2>
+            <p className="text-muted mb-0">Track service activity, status flow, and workshop revenue in one admin workspace.</p>
           </div>
           <div className="d-flex gap-2 flex-wrap">
             <button className="btn btn-success" onClick={() => handleShowModal()}>
@@ -237,13 +256,13 @@ function ServiceList() {
 
       <div className="row g-3 mb-4">
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card stat-card border-0 shadow-sm h-100">
+          <div className="card stat-card border-0 shadow-sm h-100 entity-fade entity-delay-1">
             <div className="card-body d-flex justify-content-between align-items-center">
               <div>
                 <small className="text-muted">Total Services</small>
                 <h3 className="mb-0">{services.length}</h3>
               </div>
-              <span className="stat-chip bg-success-subtle text-success">
+              <span className="stat-chip stat-icon-emerald">
                 <FaWrench />
               </span>
             </div>
@@ -251,7 +270,7 @@ function ServiceList() {
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card stat-card border-0 shadow-sm h-100">
+          <div className="card stat-card border-0 shadow-sm h-100 entity-fade entity-delay-2">
             <div className="card-body">
               <small className="text-muted d-block">Pending</small>
               <h3 className="mb-0">{metrics.pending}</h3>
@@ -260,7 +279,7 @@ function ServiceList() {
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card stat-card border-0 shadow-sm h-100">
+          <div className="card stat-card border-0 shadow-sm h-100 entity-fade entity-delay-3">
             <div className="card-body">
               <small className="text-muted d-block">In Progress</small>
               <h3 className="mb-0">{metrics.inProgress}</h3>
@@ -269,7 +288,7 @@ function ServiceList() {
         </div>
 
         <div className="col-12 col-sm-6 col-xl-3">
-          <div className="card stat-card border-0 shadow-sm h-100">
+          <div className="card stat-card border-0 shadow-sm h-100 entity-fade entity-delay-4">
             <div className="card-body">
               <small className="text-muted d-block">Revenue</small>
               <h3 className="mb-0">{formatCurrency(metrics.revenue)}</h3>
@@ -278,9 +297,9 @@ function ServiceList() {
         </div>
       </div>
 
-      <div className="card border-0 shadow-sm">
+      <div className="card border-0 shadow-sm entity-fade entity-delay-2">
         <div className="card-header bg-white border-0 pt-3 d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-lg-center">
-          <h5 className="mb-0">Service List</h5>
+          <h5 className="mb-0">Service Register</h5>
           <div className="d-flex gap-2 flex-wrap">
             <div className="search-box input-group">
               <span className="input-group-text bg-white">
@@ -289,7 +308,7 @@ function ServiceList() {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Search by vehicle, type, status"
+                placeholder="Search by vehicle, type, or status"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -371,7 +390,7 @@ function ServiceList() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7" className="text-center py-4">No services found.</td>
+                  <td colSpan="7" className="text-center py-4">No matching services found.</td>
                 </tr>
               )}
             </tbody>
@@ -383,7 +402,7 @@ function ServiceList() {
         <div className="custom-modal">
           <div className="custom-modal-content">
             <div className="custom-modal-header">
-              <h5>{editingService ? "Edit Service" : "Add Service"}</h5>
+              <h5>{editingService ? "Edit Service Record" : "Add Service Record"}</h5>
               <button className="btn-close" onClick={handleCloseModal}>
                 <FaTimes />
               </button>
@@ -424,7 +443,9 @@ function ServiceList() {
                     </option>
                   ))}
                 </select>
-                {serviceMaster.length === 0 && (
+                {serviceMasterError ? (
+                  <small className="text-danger">{serviceMasterError}</small>
+                ) : serviceMaster.length === 0 && (
                   <small className="text-danger">No active service master data found.</small>
                 )}
               </div>

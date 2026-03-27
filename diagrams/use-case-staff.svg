@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="820" viewBox="0 0 1100 820">
+  <defs>
+    <style>
+      .title { font: 700 28px Arial, sans-serif; fill: #0f172a; }
+      .actor { font: 700 20px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 16px Arial, sans-serif; fill: #1f2937; }
+      .system { fill: #f8fbff; stroke: #93c5fd; stroke-width: 3; rx: 24; ry: 24; }
+      .usecase { fill: #ffffff; stroke: #2563eb; stroke-width: 2.2; }
+      .line { stroke: #334155; stroke-width: 2; fill: none; }
+      .stick { stroke: #0f172a; stroke-width: 3; fill: none; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <rect x="30" y="30" width="1040" height="760" fill="#ffffff" stroke="#dbeafe" stroke-width="2" rx="24" ry="24" />
+  <text x="550" y="78" text-anchor="middle" class="title">Staff Use Case Diagram</text>
+
+  <rect x="280" y="120" width="700" height="610" class="system" />
+  <text x="630" y="155" text-anchor="middle" class="actor">Vehicle Management System</text>
+
+  <ellipse cx="470" cy="220" rx="110" ry="34" class="usecase" />
+  <text x="470" y="225" text-anchor="middle" class="label">Login</text>
+
+  <ellipse cx="470" cy="320" rx="125" ry="34" class="usecase" />
+  <text x="470" y="325" text-anchor="middle" class="label">View Dashboard</text>
+
+  <ellipse cx="470" cy="420" rx="110" ry="34" class="usecase" />
+  <text x="470" y="425" text-anchor="middle" class="label">View Vehicles</text>
+
+  <ellipse cx="790" cy="250" rx="120" ry="34" class="usecase" />
+  <text x="790" y="255" text-anchor="middle" class="label">Update Services</text>
+
+  <ellipse cx="790" cy="390" rx="125" ry="34" class="usecase" />
+  <text x="790" y="395" text-anchor="middle" class="label">Review Job Cards</text>
+
+  <ellipse cx="790" cy="530" rx="135" ry="34" class="usecase" />
+  <text x="790" y="535" text-anchor="middle" class="label">Track Service Queue</text>
+
+  <ellipse cx="630" cy="630" rx="105" ry="34" class="usecase" />
+  <text x="630" y="635" text-anchor="middle" class="label">Logout</text>
+
+  <g transform="translate(120,340)">
+    <circle cx="0" cy="0" r="20" class="stick" />
+    <line x1="0" y1="20" x2="0" y2="90" class="stick" />
+    <line x1="-35" y1="45" x2="35" y2="45" class="stick" />
+    <line x1="0" y1="90" x2="-28" y2="140" class="stick" />
+    <line x1="0" y1="90" x2="28" y2="140" class="stick" />
+    <text x="0" y="175" text-anchor="middle" class="actor">Staff</text>
+  </g>
+
+  <line x1="155" y1="320" x2="360" y2="220" class="line" />
+  <line x1="155" y1="340" x2="345" y2="320" class="line" />
+  <line x1="155" y1="360" x2="360" y2="420" class="line" />
+  <line x1="155" y1="380" x2="670" y2="250" class="line" />
+  <line x1="155" y1="400" x2="665" y2="390" class="line" />
+  <line x1="155" y1="420" x2="655" y2="530" class="line" />
+  <line x1="155" y1="440" x2="525" y2="630" class="line" />
+</svg>

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaLock, FaSignInAlt, FaUser } from "react-icons/fa";
 import { loginUser } from "../services/api";
+import logoMark from "../assets/vehicleops-logo.svg";
 
 function Login() {
   const navigate = useNavigate();
@@ -39,7 +40,15 @@ function Login() {
       localStorage.setItem("auth_token", token);
       localStorage.setItem("auth_role", user.role);
       localStorage.setItem("auth_user", JSON.stringify(user));
-      navigate("/");
+      sessionStorage.setItem(
+        "login_notice",
+        JSON.stringify({
+          name: user.name,
+          username: user.username,
+          role: user.role,
+        })
+      );
+      navigate("/dashboard");
     } catch (err) {
       console.error("Login failed:", err);
       setError(err.response?.data?.error || "Invalid credentials.");
@@ -79,8 +88,12 @@ function Login() {
           <section className="bg-surface px-6 py-8 sm:px-8 md:px-10 md:py-12">
             <div className="mx-auto w-full max-w-md">
               <div className="animate-fade-up animate-delay-1 mb-8 text-center md:text-left">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-iconBg text-iconFg md:mx-0">
-                  <FaLock className="text-xl" />
+                <div className="mx-auto mb-4 flex items-center gap-4 md:mx-0">
+                  <img src={logoMark} alt="VehicleOps logo" className="h-14 w-14 rounded-2xl" />
+                  <div className="hidden sm:block">
+                    <div className="text-lg font-semibold tracking-tight text-textPrimary">VehicleOps</div>
+                    <div className="text-xs uppercase tracking-[0.22em] text-textMuted">Workshop Software</div>
+                  </div>
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight text-textPrimary">Welcome back</h2>
                 <p className="mt-2 text-sm text-textMuted">

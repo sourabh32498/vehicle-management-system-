@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <defs>
+    <style>
+      .title { font: 700 28px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 700 20px Arial, sans-serif; fill: #0f172a; }
+      .text { font: 16px Arial, sans-serif; fill: #1f2937; }
+      .small { font: 14px Arial, sans-serif; fill: #475569; }
+      .state { fill: #ffffff; stroke: #2563eb; stroke-width: 2.5; rx: 20; ry: 20; }
+      .alert { fill: #fff7ed; stroke: #ea580c; stroke-width: 2.5; rx: 20; ry: 20; }
+      .final { fill: #111827; stroke: #111827; stroke-width: 2; }
+      .arrow { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0,0 10,5 0,10" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect x="40" y="40" width="1120" height="1420" fill="#f8fbff" stroke="#dbeafe" stroke-width="2" rx="24" ry="24" />
+  <text x="600" y="85" text-anchor="middle" class="title">Vehicle Management System State Transition Diagram</text>
+
+  <circle cx="600" cy="150" r="20" class="final" />
+  <text x="600" y="190" text-anchor="middle" class="small">Start</text>
+
+  <rect x="470" y="240" width="260" height="70" class="state" />
+  <text x="600" y="283" text-anchor="middle" class="label">Vehicle Added</text>
+
+  <rect x="470" y="380" width="260" height="70" class="state" />
+  <text x="600" y="423" text-anchor="middle" class="label">Registered</text>
+
+  <rect x="470" y="520" width="260" height="70" class="state" />
+  <text x="600" y="563" text-anchor="middle" class="label">Available</text>
+
+  <rect x="160" y="690" width="280" height="80" class="state" />
+  <text x="300" y="735" text-anchor="middle" class="label">Assigned / In Use</text>
+
+  <rect x="160" y="860" width="280" height="80" class="state" />
+  <text x="300" y="905" text-anchor="middle" class="label">Returned</text>
+
+  <rect x="760" y="690" width="280" height="80" class="state" />
+  <text x="900" y="735" text-anchor="middle" class="label">Under Maintenance</text>
+
+  <rect x="760" y="860" width="280" height="80" class="state" />
+  <text x="900" y="905" text-anchor="middle" class="label">Serviced</text>
+
+  <rect x="470" y="1030" width="260" height="80" class="alert" />
+  <text x="600" y="1075" text-anchor="middle" class="label">Insurance /</text>
+  <text x="600" y="1100" text-anchor="middle" class="label">Document Expired</text>
+
+  <rect x="470" y="1190" width="260" height="70" class="state" />
+  <text x="600" y="1233" text-anchor="middle" class="label">Inactive</text>
+
+  <rect x="470" y="1330" width="260" height="70" class="state" />
+  <text x="600" y="1373" text-anchor="middle" class="label">Deleted / Removed</text>
+
+  <circle cx="600" cy="1440" r="20" class="final" />
+  <text x="600" y="1480" text-anchor="middle" class="small">End</text>
+
+  <path d="M600 170 L600 240" class="arrow" />
+  <path d="M600 310 L600 380" class="arrow" />
+  <path d="M600 450 L600 520" class="arrow" />
+
+  <path d="M470 555 L300 555 L300 690" class="arrow" />
+  <path d="M300 770 L300 860" class="arrow" />
+  <path d="M440 900 L600 900 L600 590" class="arrow" />
+
+  <path d="M730 555 L900 555 L900 690" class="arrow" />
+  <path d="M900 770 L900 860" class="arrow" />
+  <path d="M760 900 L600 900 L600 590" class="arrow" />
+
+  <path d="M600 590 L600 1030" class="arrow" />
+  <path d="M600 1110 L600 1190" class="arrow" />
+  <path d="M600 1260 L600 1330" class="arrow" />
+  <path d="M600 1400 L600 1420" class="arrow" />
+
+  <text x="350" y="610" class="small">Vehicle assigned</text>
+  <text x="935" y="610" class="small">Needs service</text>
+  <text x="620" y="820" class="small">Ready again</text>
+  <text x="620" y="980" class="small">Expiry detected</text>
+</svg>

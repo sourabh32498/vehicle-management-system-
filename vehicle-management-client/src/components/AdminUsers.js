@@ -1,15 +1,42 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import axios from "axios";
 import {
   FaPlus,
   FaSyncAlt,
-  FaUsersCog,
   FaUserCheck,
   FaUserSlash,
   FaKey,
   FaSave,
+  FaUserShield,
+  FaUserTie,
+  FaUser,
 } from "react-icons/fa";
 import "./ServiceList.css";
+import {
+  createAdminUser,
+  getAdminRoles,
+  getAdminUsers,
+  resetAdminUserPassword,
+  updateAdminUserRole,
+  updateAdminUserStatus,
+} from "../services/api";
+
+const ROLE_META = {
+  super_admin: {
+    label: "Super Admin",
+    icon: FaUserShield,
+    chipClass: "bg-warning-subtle text-warning-emphasis",
+  },
+  admin: {
+    label: "Admin",
+    icon: FaUserTie,
+    chipClass: "bg-primary-subtle text-primary",
+  },
+  staff: {
+    label: "Staff",
+    icon: FaUser,
+    chipClass: "bg-success-subtle text-success",
+  },
+};
 
 function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -32,17 +59,12 @@ function AdminUsers() {
     confirmPassword: "",
   });
 
-  const authHeaders = useMemo(() => {
-    const token = localStorage.getItem("auth_token");
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  }, []);
-
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [usersRes, rolesRes] = await Promise.all([
-        axios.get("http://localhost:5000/admin/users", { headers: authHeaders }),
-        axios.get("http://localhost:5000/admin/roles", { headers: authHeaders }),
+        getAdminUsers(),
+        getAdminRoles(),
       ]);
 
       const usersList = Array.isArray(usersRes.data) ? usersRes.data : [];
@@ -69,7 +91,7 @@ function AdminUsers() {
     } finally {
       setLoading(false);
     }
-  }, [authHeaders]);
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -88,17 +110,13 @@ function AdminUsers() {
     }
 
     try {
-      await axios.post(
-        "http://localhost:5000/admin/users",
-        {
-          name: form.name.trim(),
-          username: form.username.trim(),
-          email: form.email.trim() || null,
-          password: form.password,
-          role_name: form.role_name,
-        },
-        { headers: authHeaders }
-      );
+      await createAdminUser({
+        name: form.name.trim(),
+        username: form.username.trim(),
+        email: form.email.trim() || null,
+        password: form.password,
+        role_name: form.role_name,
+      });
 
       setFeedback({ type: "success", message: "User created successfully." });
       setForm({ name: "", username: "", email: "", password: "", role_name: form.role_name });
@@ -116,11 +134,7 @@ function AdminUsers() {
     setFeedback({ type: "", message: "" });
 
     try {
-      await axios.put(
-        `http://localhost:5000/admin/users/${user.user_id}/status`,
-        { is_active: !Boolean(user.is_active) },
-        { headers: authHeaders }
-      );
+      await updateAdminUserStatus(user.user_id, { is_active: !Boolean(user.is_active) });
 
       setFeedback({ type: "success", message: "User status updated." });
       fetchData();
@@ -140,11 +154,7 @@ function AdminUsers() {
     if (!targetRole || targetRole === user.role) return;
 
     try {
-      await axios.put(
-        `http://localhost:5000/admin/users/${user.user_id}/role`,
-        { role_name: targetRole },
-        { headers: authHeaders }
-      );
+      await updateAdminUserRole(user.user_id, { role_name: targetRole });
       setFeedback({ type: "success", message: "User role updated." });
       fetchData();
     } catch (err) {
@@ -182,11 +192,9 @@ function AdminUsers() {
     }
 
     try {
-      await axios.put(
-        `http://localhost:5000/admin/users/${resetTargetUser.user_id}/password`,
-        { password: resetPasswordForm.password },
-        { headers: authHeaders }
-      );
+      await resetAdminUserPassword(resetTargetUser.user_id, {
+        password: resetPasswordForm.password,
+      });
       setFeedback({ type: "success", message: "User password reset successfully." });
       handleClosePasswordReset();
     } catch (err) {
@@ -218,6 +226,38 @@ function AdminUsers() {
 
   const currentRole = localStorage.getItem("auth_role") || "";
   const canCreateUsers = currentRole === "super_admin";
+  const roleStats = useMemo(() => {
+    return users.reduce((acc, user) => {
+      const roleName = String(user.role || "");
+      if (!roleName) return acc;
+
+      if (!acc[roleName]) {
+        acc[roleName] = { logins: 0, logouts: 0 };
+      }
+
+      acc[roleName].logins += Number(user.login_count) || 0;
+      acc[roleName].logouts += Number(user.logout_count) || 0;
+      return acc;
+    }, {});
+  }, [users]);
+  const statsCards = useMemo(() => {
+    const orderedRoles = [
+      "super_admin",
+      "admin",
+      "staff",
+    ];
+
+    return orderedRoles.map((roleName) => ({
+      roleName,
+      ...(ROLE_META[roleName] || {
+        label: roleName,
+        icon: FaUser,
+        chipClass: "bg-light text-dark",
+      }),
+      logins: roleStats[roleName]?.logins || 0,
+      logouts: roleStats[roleName]?.logouts || 0,
+    }));
+  }, [roleStats]);
   let currentUserId = null;
   try {
     currentUserId = JSON.parse(localStorage.getItem("auth_user") || "{}").user_id || null;
@@ -250,11 +290,31 @@ function AdminUsers() {
                 <h3 className="mb-0">{users.length}</h3>
               </div>
               <span className="stat-chip bg-dark-subtle text-dark">
-                <FaUsersCog />
+                <FaUserShield />
               </span>
             </div>
           </div>
         </div>
+        {statsCards.map((card) => {
+          const Icon = card.icon;
+
+          return (
+            <div key={card.roleName} className="col-12 col-sm-6 col-xl-3">
+              <div className="card stat-card border-0 shadow-sm h-100">
+                <div className="card-body d-flex justify-content-between align-items-center">
+                  <div>
+                    <small className="text-muted">{card.label} Logins</small>
+                    <h3 className="mb-0">{card.logins}</h3>
+                    <div className="small text-muted">Logouts: {card.logouts}</div>
+                  </div>
+                  <span className={`stat-chip ${card.chipClass}`}>
+                    <Icon />
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {canCreateUsers && (
@@ -315,6 +375,8 @@ function AdminUsers() {
                 <th>Username</th>
                 <th>Email</th>
                 <th className="role-col">Role</th>
+                <th>Logins</th>
+                <th>Logouts</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -322,7 +384,7 @@ function AdminUsers() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="6" className="text-center py-4">Loading users...</td>
+                  <td colSpan="8" className="text-center py-4">Loading users...</td>
                 </tr>
               ) : filteredUsers.length > 0 ? (
                 filteredUsers.map((u) => (
@@ -362,6 +424,22 @@ function AdminUsers() {
                       )}
                     </td>
                     <td>
+                      <div className="fw-semibold">{Number(u.login_count) || 0}</div>
+                      <div className="small text-muted">
+                        {u.last_login_at
+                          ? `Last: ${new Date(u.last_login_at).toLocaleString()}`
+                          : "No login yet"}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="fw-semibold">{Number(u.logout_count) || 0}</div>
+                      <div className="small text-muted">
+                        {u.last_logout_at
+                          ? `Last: ${new Date(u.last_logout_at).toLocaleString()}`
+                          : "No logout yet"}
+                      </div>
+                    </td>
+                    <td>
                       <span className={`badge ${u.is_active ? "bg-success" : "bg-secondary"}`}>
                         {u.is_active ? "Active" : "Inactive"}
                       </span>
@@ -399,7 +477,7 @@ function AdminUsers() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="text-center py-4">No users found.</td>
+                  <td colSpan="8" className="text-center py-4">No users found.</td>
                 </tr>
               )}
             </tbody>
